@@ -12,6 +12,10 @@ public class PlayerBehavior : MonoBehaviour
     private PlayerInputs inputs;
     private Vector2 direction;
 
+    private Rigidbody2D myRigidbody;
+    private Animator myAnimator;
+    private SpriteRenderer myRenderer;
+
     private void OnEnable()
     {
         //recup la liste des inputs
@@ -21,6 +25,10 @@ public class PlayerBehavior : MonoBehaviour
         inputs.Player.Move.performed += OnMovePerformed;
         //recuperer l'action "quand le joueur n'appui pas sur les boutons d'actions move"
         inputs.Player.Move.canceled += OnMoveCanceled;
+
+        myRigidbody = GetComponent<Rigidbody2D>();
+        myAnimator = GetComponent<Animator>();
+        myRenderer = GetComponent<SpriteRenderer>();
     }
 
     private void OnMoveCanceled(InputAction.CallbackContext obj)
@@ -42,14 +50,29 @@ public class PlayerBehavior : MonoBehaviour
     // Fixed update pour modifier le rigidbody plus precisement (repeté + de fois que l'update
     void FixedUpdate()
     {
-        //je recupère le rigidbody de mon character
-        var myRigidBody = GetComponent<Rigidbody2D>();
+        
 
         direction.y = 0;
         //je limite ma vitesse max
-        if (myRigidBody.velocity.sqrMagnitude < maxspeed )
+        if (myRigidbody.velocity.sqrMagnitude < maxspeed )
             //j'ajoute une force de poussé a mon character
-            myRigidBody.AddForce(direction * speed);
+            myRigidbody.AddForce(direction * speed);
 
+        //FLORE comment l'ordinateur traduit une valeur de float de la premiere  ligne en valeur bool de la condition du booleen
+        //creer variable qui verifie si on cours
+        var isRunning = direction.x != 0;
+        //recuperer la condition de l'animator isRunning
+        myAnimator.SetBool("isRunning", isRunning);
+
+        //code pour flipper correctement le sprite dans la bonne direction en fonction de la valeur (vers où elle pointe)
+        if (direction.x < 0)
+        {
+            GetComponent<SpriteRenderer>().flipX = true;
+
+        }
+       else if (direction.x > 0)
+        {
+            myRenderer.flipX = false;
+        }
     }
 }
