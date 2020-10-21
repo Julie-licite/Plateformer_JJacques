@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 //using System.Diagnostics;
@@ -39,20 +39,9 @@ public class PlayerBehavior : MonoBehaviour
         myRenderer = GetComponent<SpriteRenderer>();
     }
 
-<<<<<<< Updated upstream
-    private void JumpOnPerformed (InputAction.CallbackContext obj)
-    {
-      
-        //si le joueur touche le sol ça autorise le joueur a sauter
-        if (isOnFloor)
-        {
-        //j'ajoute de la force soudaine (avec la vitesse specifié dans le serializefield a mon rigidbody quand jump est activé
-        myRigidbody.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
-        //je signale que quand je quitte donne de l'imppulsion forcement je suis plus sur le sol
-        isOnFloor = false;
-        }
-        
-=======
+
+
+
     private void JumpOnPerformed(InputAction.CallbackContext obj)
     {
 
@@ -67,7 +56,7 @@ public class PlayerBehavior : MonoBehaviour
             isOnFloor = false;
         }
 
->>>>>>> Stashed changes
+
     }
 
     //quand les touches directions sont pas touché, le player ne bouge pas
@@ -84,19 +73,8 @@ public class PlayerBehavior : MonoBehaviour
 
     }
 
-<<<<<<< Updated upstream
-    
 
 
-    // Fixed update pour modifier le rigidbody plus precisement (repeté + de fois que l'update
-    void FixedUpdate()
-    {
-        
-
-        direction.y = 0;
-        //je limite ma vitesse max
-        if (myRigidbody.velocity.sqrMagnitude < maxspeed )
-=======
 
 
 
@@ -108,7 +86,7 @@ public class PlayerBehavior : MonoBehaviour
         direction.y = 0;
         //je limite ma vitesse max
         if (myRigidbody.velocity.sqrMagnitude < maxspeed)
->>>>>>> Stashed changes
+
             //j'ajoute une force de poussé a mon character
             myRigidbody.AddForce(direction * speed);
 
@@ -124,25 +102,12 @@ public class PlayerBehavior : MonoBehaviour
             GetComponent<SpriteRenderer>().flipX = true;
 
         }
-<<<<<<< Updated upstream
+
        else if (direction.x > 0)
         {
             myRenderer.flipX = false;
         }
-    }
 
-    //detecter la collision avec le sol en utilisant des tags (jai moins peur des tags)
-    private void OnCollisionEnter2D(Collision2D other)
-    {
-        var touchFloor = floor == (floor | (1 << other.gameObject.layer));
-        var touchFromAbove = other.contacts[0].normal == Vector2.up;
-
-        if (touchFloor && touchFromAbove)
-        {
-            
-            isOnFloor = true;
-        }
-=======
         else if (direction.x > 0)
         {
             myRenderer.flipX = false;
@@ -153,7 +118,7 @@ public class PlayerBehavior : MonoBehaviour
 
 
 
->>>>>>> Stashed changes
+
     }
 
     //detecter la collision avec le sol en utilisant des tags (jai moins peur des tags)
@@ -165,11 +130,24 @@ public class PlayerBehavior : MonoBehaviour
 
         if (touchFloor && touchFromAbove)
         {
+            
             isOnFloor = true;
         }
 
-        myAnimator.SetBool("isJumping", false);
+        else if (direction.x > 0)
+        {
+            myRenderer.flipX = false;
+        }
+
+        //var isJumping = !isOnFloor && myRigidbody.direction.y > 0;
+        //myAnimator.SetBool("IsJumping", isJumping);
+
+
+
+
     }
+
+   
 
 
 }
