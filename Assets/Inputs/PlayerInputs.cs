@@ -32,7 +32,7 @@ public class @PlayerInputs : IInputActionCollection, IDisposable
                     ""id"": ""e2357b62-4010-402d-8e43-342c984cd7e6"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": ""Press""
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -94,7 +94,7 @@ public class @PlayerInputs : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""a5bc95bf-6973-4ed9-9926-267cc4064e96"",
-                    ""path"": """",
+                    ""path"": ""<Keyboard>/space"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 //using System.Diagnostics;
+//using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -9,12 +10,17 @@ public class PlayerBehavior : MonoBehaviour
 {
     [SerializeField] private float speed;
     [SerializeField] private float maxspeed;
+    [SerializeField] private float jumpForce;
+    [SerializeField] private LayerMask floor;
+
     private PlayerInputs inputs;
     private Vector2 direction;
 
     private Rigidbody2D myRigidbody;
     private Animator myAnimator;
     private SpriteRenderer myRenderer;
+
+    private bool isOnFloor = false;
 
     private void OnEnable()
     {
@@ -25,12 +31,29 @@ public class PlayerBehavior : MonoBehaviour
         inputs.Player.Move.performed += OnMovePerformed;
         //recuperer l'action "quand le joueur n'appui pas sur les boutons d'actions move"
         inputs.Player.Move.canceled += OnMoveCanceled;
+        //recuperer l'action jump dans le menu des inputs
+        inputs.Player.Jump.performed += JumpOnPerformed;
 
         myRigidbody = GetComponent<Rigidbody2D>();
         myAnimator = GetComponent<Animator>();
         myRenderer = GetComponent<SpriteRenderer>();
     }
 
+    private void JumpOnPerformed (InputAction.CallbackContext obj)
+    {
+      
+        //si le joueur touche le sol ça autorise le joueur a sauter
+        if (isOnFloor)
+        {
+        //j'ajoute de la force soudaine (avec la vitesse specifié dans le serializefield a mon rigidbody quand jump est activé
+        myRigidbody.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+        //je signale que quand je quitte donne de l'imppulsion forcement je suis plus sur le sol
+        isOnFloor = false;
+        }
+        
+    }
+
+    //quand les touches directions sont pas touché, le player ne bouge pas
     private void OnMoveCanceled(InputAction.CallbackContext obj)
     {
         direction = Vector2.zero;
@@ -73,6 +96,19 @@ public class PlayerBehavior : MonoBehaviour
        else if (direction.x > 0)
         {
             myRenderer.flipX = false;
+        }
+    }
+
+    //detecter la collision avec le sol en utilisant des tags (jai moins peur des tags)
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        var touchFloor = floor == (floor | (1 << other.gameObject.layer));
+        var touchFromAbove = other.contacts[0].normal == Vector2.up;
+
+        if (touchFloor && touchFromAbove)
+        {
+            
+            isOnFloor = true;
         }
     }
 }
