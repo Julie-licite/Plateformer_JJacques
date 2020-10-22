@@ -114,7 +114,7 @@ public class PlayerBehavior : MonoBehaviour
         }
 
         //var isJumping = !isOnFloor && myRigidbody.direction.y > 0;
-        //myAnimator.SetBool("IsJumping", isJumping);
+        //myAnimator.SetBool("IsJumping", false);
 
 
 
@@ -130,17 +130,10 @@ public class PlayerBehavior : MonoBehaviour
 
         if (touchFloor && touchFromAbove)
         {
-            
             isOnFloor = true;
         }
 
-        else if (direction.x > 0)
-        {
-            myRenderer.flipX = false;
-        }
-
-        //var isJumping = !isOnFloor && myRigidbody.direction.y > 0;
-        //myAnimator.SetBool("IsJumping", isJumping);
+        myAnimator.SetBool("isJumping", false);
 
 
 
