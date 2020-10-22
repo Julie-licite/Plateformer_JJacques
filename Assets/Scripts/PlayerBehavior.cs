@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 //using System.Diagnostics;
 //using System.Diagnostics;
+//using System.Diagnostics;
+//using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -81,7 +83,7 @@ public class PlayerBehavior : MonoBehaviour
     // Fixed update pour modifier le rigidbody plus precisement (repeté + de fois que l'update
     void FixedUpdate()
     {
-
+        
 
         direction.y = 0;
         //je limite ma vitesse max
@@ -121,7 +123,7 @@ public class PlayerBehavior : MonoBehaviour
 
     }
 
-    //detecter la collision avec le sol en utilisant des tags (jai moins peur des tags)
+    //detecter la collision avec le sol en utilisant des layers (meme si jai moins peur des tags)
     private void OnCollisionEnter2D(Collision2D other)
     {
         var touchFloor = floor == (floor | (1 << other.gameObject.layer));
@@ -131,6 +133,12 @@ public class PlayerBehavior : MonoBehaviour
         if (touchFloor && touchFromAbove)
         {
             isOnFloor = true;
+            
+        }
+
+        if (touchFromAbove)
+        {
+            Debug.Log("fjdshfsehfujeshfse");
         }
 
         myAnimator.SetBool("isJumping", false);
