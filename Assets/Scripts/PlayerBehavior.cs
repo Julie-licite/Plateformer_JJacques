@@ -2,9 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 //using System.Diagnostics;
-//using System.Diagnostics;
-//using System.Diagnostics;
-//using System.Diagnostics;
+
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -23,6 +21,7 @@ public class PlayerBehavior : MonoBehaviour
     private SpriteRenderer myRenderer;
 
     private bool isOnFloor = false;
+    private bool footOnFloor = false;
 
     private void OnEnable()
     {
@@ -88,9 +87,12 @@ public class PlayerBehavior : MonoBehaviour
         direction.y = 0;
         //je limite ma vitesse max
         if (myRigidbody.velocity.sqrMagnitude < maxspeed)
-
+        {
             //j'ajoute une force de poussé a mon character
             myRigidbody.AddForce(direction * speed);
+        }
+
+           
 
         //FLORE comment l'ordinateur traduit une valeur de float de la premiere  ligne en valeur bool de la condition du booleen
         //creer variable qui verifie si on cours
@@ -115,8 +117,16 @@ public class PlayerBehavior : MonoBehaviour
             myRenderer.flipX = false;
         }
 
-        //var isJumping = !isOnFloor && myRigidbody.direction.y > 0;
-        //myAnimator.SetBool("IsJumping", false);
+        //setup Raycast pour verifier si le joueur a une surface SOUS lui
+
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, -Vector2.up);
+
+        if (hit.collider != null)
+        {
+            Debug.Log("footonfloor");
+            footOnFloor = true;
+            
+        }
 
 
 
@@ -124,13 +134,13 @@ public class PlayerBehavior : MonoBehaviour
     }
 
     //detecter la collision avec le sol en utilisant des layers (meme si jai moins peur des tags)
-    private void OnCollisionEnter2D(Collision2D other)
+     void OnCollisionEnter2D(Collision2D other)
     {
         var touchFloor = floor == (floor | (1 << other.gameObject.layer));
         var touchFromAbove = other.contacts[0].normal == Vector2.up;
 
 
-        if (touchFloor && touchFromAbove)
+        if (touchFloor && /*touchFromAbove*/ footOnFloor )
         {
             isOnFloor = true;
             
