@@ -137,19 +137,16 @@ public class PlayerBehavior : MonoBehaviour
      void OnCollisionEnter2D(Collision2D other)
     {
         var touchFloor = floor == (floor | (1 << other.gameObject.layer));
-        var touchFromAbove = other.contacts[0].normal == Vector2.up;
+        //var touchFromAbove = other.contacts[0].normal == Vector2.up;
 
 
-        if (touchFloor && /*touchFromAbove*/ footOnFloor )
+        if (touchFloor && footOnFloor )
         {
             isOnFloor = true;
             
         }
 
-        if (touchFromAbove)
-        {
-            Debug.Log("fjdshfsehfujeshfse");
-        }
+        
 
         myAnimator.SetBool("isJumping", false);
 
